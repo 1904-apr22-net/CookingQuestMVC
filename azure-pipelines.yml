@@ -43,6 +43,14 @@ steps:
 #   inputs:
 #     pollingTimeoutSec: '60'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: $(solutionPath)/CookingQuest.Web/*.csproj
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Free Trial(6b0c24ca-82f5-4ae0-9ad3-0c0422d6ef66)'
