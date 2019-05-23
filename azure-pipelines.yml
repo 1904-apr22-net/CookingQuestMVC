@@ -47,7 +47,7 @@ steps:
   inputs:
     azureSubscription: 'Free Trial(6b0c24ca-82f5-4ae0-9ad3-0c0422d6ef66)'
     appType: 'webApp'
-    appName: "CookingQuestMVC"
+    appName: 'CookingQuestMVC'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
 
