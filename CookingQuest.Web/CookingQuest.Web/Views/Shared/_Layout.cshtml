@@ -27,13 +27,42 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var roleType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+                            var Email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+                            var name = User.Claims.First(c => c.Type == "name").Value;
+                            var email = User.Claims.First(c => c.Type == Email).Value;
+                            var roles = User.Claims.Where(c => c.Type == roleType).Select(c => c.Value);
+                            if (roles.Any())
+                            {
+                                email += $" ({string.Join(", ", roles)})";
+                            }
+                            <li class="nav-item">
+                                <span class="navbar-text text-dark">@email</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="AzureAD" asp-controller="Account" asp-action="SignOut">Sign out</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="AzureAD" asp-controller="Account" asp-action="SignIn">Sign in</a>
+                            </li>
+                        }
+                    </ul>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Player" asp-action="Index">Player</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
