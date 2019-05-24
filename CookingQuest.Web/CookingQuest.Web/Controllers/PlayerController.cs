@@ -55,7 +55,6 @@ namespace CookingQuest.Web.Controllers
             }
             IEnumerable<LocationModel> locations = await response.Content.ReadAsAsync<IEnumerable<LocationModel>>();
 
-            //IEnumerable<PlayerModel> model = players.Select(Mapper.Map);
             PlayerViewModel viewModel = new PlayerViewModel
             {
                 Gold = player.Gold,
