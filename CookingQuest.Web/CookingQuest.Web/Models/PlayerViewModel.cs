@@ -12,8 +12,8 @@ namespace CookingQuest.Web.Models
         public string Name { get; set; }
         public int Gold { get; set; }
 
-        public IEnumerable<LootModel> Loot;
-        public IEnumerable<EquipmentModel> Equipment;
-        public IEnumerable<LocationModel> Locations;
+        public IEnumerable<LootModel> Loot { get; set; }
+        public IEnumerable<EquipmentModel> Equipment { get; set; }
+        public IEnumerable<LocationModel> Locations { get; set; }
     }
 }
