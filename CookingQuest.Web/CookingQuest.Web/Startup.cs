@@ -35,7 +35,7 @@ namespace CookingQuest.Web
             });
 
             services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
-                .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+                     .AddAzureAD(options => Configuration.Bind("AzureAd", options));
 
             services.AddSingleton<HttpClient>();
 
