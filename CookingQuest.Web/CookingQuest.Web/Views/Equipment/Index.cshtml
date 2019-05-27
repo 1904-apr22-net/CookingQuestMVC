@@ -1,0 +1,70 @@
+﻿@model IEnumerable<CookingQuest.Web.API_Models.EquipmentModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Equipment (Admin)</h1>
+
+<p>
+    <a asp-action="Create">Create New Equipment</a>
+</p>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Modifier)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Difficulty)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Modifier)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Difficulty)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit",
+                                 new
+                                 {
+                                     Modifer = item.PlayerEquipmentId,
+                                     EquipmentId = item.EquipmentId,
+                                     Name = item.Name,
+                                     Type = item.Type,
+                                     Price = item.Price,
+                                     Modifier = item.Modifier,
+                                     Difficulty = item.Difficulty,
+                                 })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
