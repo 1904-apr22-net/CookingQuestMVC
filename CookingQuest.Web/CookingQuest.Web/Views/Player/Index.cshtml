@@ -1,35 +1,47 @@
 ﻿@model CookingQuest.Web.Models.PlayerViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Player Manager";
 }
 
 
 @if (User.Identity.IsAuthenticated)
 {
     <h1>Player Profile</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Gold)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.Gold)
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Gold)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Gold)
+                    </td>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <td>
+                            @Html.ActionLink("Edit", "EditPlayer",
+                             new
+                             {
+                                 PlayerId = Model.PlayerId,
+                                 Name = Model.Name,
+                                 Gold = Model.Gold,
+                             })
+                        </td>
+                    }
+                </tr>
+            </tbody>
+        </table>
 }
 else
 {
@@ -40,37 +52,39 @@ else
 {
     <br />
     <h1>Unlocked Locations</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Difficulty
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Locations)
-            {
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Difficulty)
-                    </td>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Difficulty
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Locations)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Difficulty)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 else
 {
@@ -81,43 +95,72 @@ else
 {
     <br />
     <h1>Player Equipment</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Type
-                </th>
-                <th>
-                    Quality
-                </th>
-                <th>
-                    Price
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Equipment)
-            {
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Type)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Difficulty)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Quality
+                    </th>
+                    <th>
+                        Price
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var equipmentModel in Model.Equipment)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => equipmentModel.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => equipmentModel.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => equipmentModel.Difficulty)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => equipmentModel.Price)
+                        </td>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <td>
+                                @Html.ActionLink("Edit", "EditEquipment",
+                                 new
+                                 {
+                                     PlayerEquipmentId = equipmentModel.PlayerEquipmentId,
+                                     EquipmentId = equipmentModel.EquipmentId,
+                                     Name = equipmentModel.Name,
+                                     Type = equipmentModel.Type,
+                                     Price = equipmentModel.Price,
+                                     Modifier = equipmentModel.Modifier,
+                                     Difficulty = equipmentModel.Difficulty,
+                                 })
+                                @using (Html.BeginForm(actionName: "DeleteEquipment", controllerName: "Player", routeValues: new { id = equipmentModel.PlayerEquipmentId }, method: FormMethod.Post, antiforgery: true, htmlAttributes: new { id = equipmentModel.PlayerEquipmentId }))
+                                {
+                                    @Html.HiddenFor(m => equipmentModel.PlayerEquipmentId)
+                                    @Html.HiddenFor(m => equipmentModel.EquipmentId)
+                                    @Html.HiddenFor(m => equipmentModel.Name)
+                                    @Html.HiddenFor(m => equipmentModel.Type)
+                                    @Html.HiddenFor(m => equipmentModel.Price)
+                                    @Html.HiddenFor(m => equipmentModel.Modifier)
+                                    @Html.HiddenFor(m => equipmentModel.Difficulty)
+                                    <a href="javascript:document.getElementById('@equipmentModel.PlayerEquipmentId').submit()">Delete</a>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 else
 {
@@ -128,47 +171,74 @@ else
 {
     <br />
     <h1>Player Loot</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Price
-                </th>
-                <th>
-                    Quantity
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Loot)
-            {
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
-                    </td>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <br />
-    <h1>No Player Loot</h1>
-}
+            </thead>
+            <tbody>
+                @foreach (var lootModel in Model.Loot)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => lootModel.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => lootModel.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => lootModel.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => lootModel.Quantity)
+                        </td>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <td>
+                                @Html.ActionLink("Edit", "Edit",
+                                 new
+                                 {
+                                     PlayerLootId = lootModel.PlayerLootId,
+                                     LootId = lootModel.LootId,
+                                     Name = lootModel.Name,
+                                     Description = lootModel.Description,
+                                     Price = lootModel.Price,
+                                     Quantity = lootModel.Quantity,
+                                 })
+                                @using (Html.BeginForm(actionName: "Delete", controllerName: "Player", routeValues: new { id = lootModel.PlayerLootId }, method: FormMethod.Post, antiforgery: true, htmlAttributes: new { id = lootModel.PlayerLootId }))
+                                {
+                                    @Html.HiddenFor(m => lootModel.PlayerLootId)
+                                    @Html.HiddenFor(m => lootModel.LootId)
+                                    @Html.HiddenFor(m => lootModel.Name)
+                                    @Html.HiddenFor(m => lootModel.Description)
+                                    @Html.HiddenFor(m => lootModel.Price)
+                                    @Html.HiddenFor(m => lootModel.Quantity)
+                                    <a href="javascript:document.getElementById('@lootModel.PlayerLootId').submit()">Delete</a>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+        }
+        else
+        {
+        <br />
+        <h1>No Player Loot</h1>
+        }
 
