@@ -1,13 +1,13 @@
-﻿@model CookingQuest.Web.Models.PlayerViewModel
+﻿@model IEnumerable<CookingQuest.Web.Models.LocationViewModel>
 
 @{
-    ViewData["Title"] = "Player Manager";
+    ViewData["Title"] = "Index";
 }
 
 
-@if(User.Identity.IsAuthenticated)
+@*@if(User.Identity.IsAuthenticated)
 { 
-    <h1>Player Profile</h1>
+    <h1>Location Profile</h1>
     <table class="table">
         <thead>
             <tr>
@@ -30,9 +30,9 @@
             </tr>
         </tbody>
     </table>
-}
+}*@
 
-@if (User.Identity.IsAuthenticated && Model.Locations != null)
+@if (User.Identity.IsAuthenticated && Model != null)
 {
     <br />
     <h1>Unlocked Locations</h1>
@@ -51,7 +51,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Locations)
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>
@@ -69,7 +69,7 @@
     </table>
 }
 
-@if (User.Identity.IsAuthenticated && Model.Equipment != null)
+@*@if (User.Identity.IsAuthenticated && Model.Equipment != null)
 {
     <br />
     <h1>Player Equipment</h1>
@@ -152,6 +152,6 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </table>*@
 }
 
