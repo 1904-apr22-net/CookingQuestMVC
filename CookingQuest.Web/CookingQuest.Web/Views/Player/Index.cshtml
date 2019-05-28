@@ -5,8 +5,8 @@
 }
 
 
-@if(User.Identity.IsAuthenticated)
-{ 
+@if (User.Identity.IsAuthenticated)
+{
     <h1>Player Profile</h1>
     <table class="table">
         <thead>
@@ -31,8 +31,12 @@
         </tbody>
     </table>
 }
-
-@if (User.Identity.IsAuthenticated && Model.Locations != null)
+else
+{
+    <br />
+    <h1>User isn't Authenticated</h1>
+}
+@if (User.Identity.IsAuthenticated && Model.Locations.Count() != 0)
 {
     <br />
     <h1>Unlocked Locations</h1>
@@ -68,8 +72,12 @@
         </tbody>
     </table>
 }
-
-@if (User.Identity.IsAuthenticated && Model.Equipment != null)
+else
+{
+    <br />
+    <h1>No Unlocked Locations</h1>
+}
+@if (User.Identity.IsAuthenticated && Model.Equipment.Count() != 0)
 {
     <br />
     <h1>Player Equipment</h1>
@@ -111,8 +119,12 @@
         </tbody>
     </table>
 }
-
-@if (User.Identity.IsAuthenticated && Model.Loot != null)
+else
+{
+    <br />
+    <h1>No Player Equipment</h1>
+}
+@if (User.Identity.IsAuthenticated && Model.Loot.Count() != 0)
 {
     <br />
     <h1>Player Loot</h1>
@@ -153,5 +165,10 @@
             }
         </tbody>
     </table>
+}
+else
+{
+    <br />
+    <h1>No Player Loot</h1>
 }
 
