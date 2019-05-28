@@ -21,6 +21,7 @@ namespace CookingQuest.Web.Controllers
         {
             _httpClient = httpClient;
         }
+        [AllowAnonymous]
         // GET: Loot
         public async Task<ActionResult> Index()
         {

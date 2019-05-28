@@ -4,7 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Loot (Admin)</h1>
+@if (User.IsInRole("Administrator"))
+{
+    <h1>Loot (Admin)</h1>
 
 <p>
     <a asp-action="Create">Create New Loot</a>
@@ -40,18 +42,19 @@
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit",
-                         new
-                         {
-                             PlayerLootId = item.PlayerLootId,
-                             LootId = item.LootId,
-                             Name = item.Name,
-                             Description = item.Description,
-                             Price = item.Price,
-                             Quantity = item.Quantity,
-                         })
+              new
+              {
+                  PlayerLootId = item.PlayerLootId,
+                  LootId = item.LootId,
+                  Name = item.Name,
+                  Description = item.Description,
+                  Price = item.Price,
+                  Quantity = item.Quantity,
+              })
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+}

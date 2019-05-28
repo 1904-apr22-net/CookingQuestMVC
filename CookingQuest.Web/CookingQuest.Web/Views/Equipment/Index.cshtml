@@ -4,7 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Equipment (Admin)</h1>
+@if (User.IsInRole("Administrator"))
+{
+    <h1>Equipment (Admin)</h1>
 
 <p>
     <a asp-action="Create">Create New Equipment</a>
@@ -52,19 +54,20 @@
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit",
-                                 new
-                                 {
-                                     Modifer = item.PlayerEquipmentId,
-                                     EquipmentId = item.EquipmentId,
-                                     Name = item.Name,
-                                     Type = item.Type,
-                                     Price = item.Price,
-                                     Modifier = item.Modifier,
-                                     Difficulty = item.Difficulty,
-                                 })
+                      new
+                      {
+                          Modifer = item.PlayerEquipmentId,
+                          EquipmentId = item.EquipmentId,
+                          Name = item.Name,
+                          Type = item.Type,
+                          Price = item.Price,
+                          Modifier = item.Modifier,
+                          Difficulty = item.Difficulty,
+                      })
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+}
