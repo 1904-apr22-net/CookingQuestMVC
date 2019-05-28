@@ -58,6 +58,8 @@ namespace CookingQuest.Web.Controllers
             return View(locationsViewModel);
         }
 
+
+
         // GET: Player/Details/5
         public ActionResult Details(int id)
         {
@@ -77,7 +79,6 @@ namespace CookingQuest.Web.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
 
                 return RedirectToAction(nameof(Index));
             }
@@ -100,7 +101,6 @@ namespace CookingQuest.Web.Controllers
         {
             try
             {
-                // TODO: Add update logic here
 
                 return RedirectToAction(nameof(Index));
             }
@@ -123,7 +123,6 @@ namespace CookingQuest.Web.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
 
                 return RedirectToAction(nameof(Index));
             }

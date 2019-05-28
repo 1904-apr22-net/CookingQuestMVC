@@ -48,12 +48,16 @@ namespace CookingQuest.Web.Controllers
             }
             IEnumerable<LootModel> loot = await response.Content.ReadAsAsync<IEnumerable<LootModel>>();
 
+            IEnumerable<LocationModel> locations;
             response = await _httpClient.GetAsync(_url + "/locations/" + player.PlayerId);
             if (!response.IsSuccessStatusCode)
             {
-                return View("Error", new ErrorViewModel());
+                locations = new List<LocationModel>();
             }
-            IEnumerable<LocationModel> locations = await response.Content.ReadAsAsync<IEnumerable<LocationModel>>();
+            else
+            {
+                locations = await response.Content.ReadAsAsync<IEnumerable<LocationModel>>();
+            }
 
             PlayerViewModel viewModel = new PlayerViewModel
             {
@@ -68,49 +72,41 @@ namespace CookingQuest.Web.Controllers
             return View(viewModel);
         }
 
-        // GET: Player/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Player/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Player/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         // GET: Player/Edit/5
-        public ActionResult Edit(int id)
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Edit(int PlayerLootId, int LootId, string Name, string Description, int Price, int Quantity)
         {
             return View();
         }
 
-        // POST: Player/Edit/5
+        // POST: Player/Edit
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(LootModel lootModel )
         {
             try
             {
-                // TODO: Add update logic here
+                if (!ModelState.IsValid)
+                {
+                    return View(lootModel);
+                }
+                var email = User.Claims.First(c => c.Type == Email).Value;
+
+                HttpResponseMessage response = await _httpClient.GetAsync(_url + "/account/" + email);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+                PlayerModel player = await response.Content.ReadAsAsync<PlayerModel>();
+
+
+                response = await _httpClient.PostAsJsonAsync(_url + "/Loot/" + player.PlayerId, lootModel);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+                var x = await response.Content.ReadAsAsync<IEnumerable<ActionResult>>();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -119,8 +115,92 @@ namespace CookingQuest.Web.Controllers
                 return View();
             }
         }
+        // GET: Player/Edit/5
+        [Authorize(Roles = "Administrator")]
+        public ActionResult EditPlayer(int PlayerId, string Name, int Gold)
+        {
+            return View();
+        }
+        // POST: Player/Edit
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditPlayer(PlayerModel playerModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(playerModel);
+                }
+                var email = User.Claims.First(c => c.Type == Email).Value;
 
+                HttpResponseMessage response = await _httpClient.GetAsync(_url + "/account/" + email);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+                PlayerModel player = await response.Content.ReadAsAsync<PlayerModel>();
+
+
+                response = await _httpClient.PutAsJsonAsync(_url + "/" + player.PlayerId, playerModel);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+                var x = await response.Content.ReadAsAsync<IEnumerable<ActionResult>>();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        // GET: Player/Edit/5
+        [Authorize(Roles = "Administrator")]
+        public ActionResult EditEquipment(int PlayerEquipmentId, int EquipmentId, string Name, string Type, int Price, int Modifier, int Difficulty)
+        {
+            return View();
+        }
+        // POST: Player/Edit
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditEquipment(EquipmentModel equipmentModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(equipmentModel);
+                }
+                var email = User.Claims.First(c => c.Type == Email).Value;
+
+                HttpResponseMessage response = await _httpClient.GetAsync(_url + "/account/" + email);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+                PlayerModel player = await response.Content.ReadAsAsync<PlayerModel>();
+
+
+                response = await _httpClient.PostAsJsonAsync(_url + "/Equipment/" + player.PlayerId, equipmentModel);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+                var x = await response.Content.ReadAsAsync<IEnumerable<ActionResult>>();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
         // GET: Player/Delete/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int id)
         {
             return View();
@@ -128,12 +208,52 @@ namespace CookingQuest.Web.Controllers
 
         // POST: Player/Delete/5
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, LootModel lootModel)
         {
             try
             {
-                // TODO: Add delete logic here
+                if (!ModelState.IsValid)
+                {
+                    return View(lootModel);
+                }
+                var email = User.Claims.First(c => c.Type == Email).Value;
+
+                HttpResponseMessage response = await _httpClient.DeleteAsync(_url + "/DeleteLoot/" + id);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+                var x = await response.Content.ReadAsAsync<IEnumerable<ActionResult>>();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        // POST: Player/Delete/5
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteEquipment(int id, EquipmentModel equipmentModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(equipmentModel);
+                }
+                var email = User.Claims.First(c => c.Type == Email).Value;
+
+                HttpResponseMessage response = await _httpClient.DeleteAsync(_url + "/DeleteEquipment/" + id);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+                var x = await response.Content.ReadAsAsync<IEnumerable<ActionResult>>();
 
                 return RedirectToAction(nameof(Index));
             }
