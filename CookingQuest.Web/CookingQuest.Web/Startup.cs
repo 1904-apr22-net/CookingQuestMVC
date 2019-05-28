@@ -39,6 +39,7 @@ namespace CookingQuest.Web
 
             services.AddSingleton<HttpClient>();
 
+            services.AddSingleton(Configuration.GetSection("myConfiguration").Get<MyConfiguration>());
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
