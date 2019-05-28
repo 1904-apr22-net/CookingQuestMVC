@@ -58,6 +58,8 @@ namespace CookingQuest.Web.Controllers
             return View(locationsViewModel);
         }
 
+
+
         // GET: Player/Details/5
         public ActionResult Details(int id)
         {
