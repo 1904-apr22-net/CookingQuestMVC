@@ -14,13 +14,19 @@ namespace CookingQuest.Web.Controllers
     [Authorize]
     public class LocationController : Controller
     {
-        private readonly string _url = "https://localhost:44336/api/Location";
+        private readonly MyConfiguration _myConfiguration;
+        private readonly string _url;
+        private string extensionUrl = "api";
         private readonly HttpClient _httpClient;
         private readonly string Email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
-        public LocationController(HttpClient httpClient)
+
+        public LocationController(HttpClient httpClient, MyConfiguration myConfiguration)
         {
             _httpClient = httpClient;
+            _myConfiguration = myConfiguration;
+            _url = _myConfiguration.ServiceUrl + extensionUrl;
         }
+        
 
         // GET: Location
         public async Task<ActionResult> Index()
