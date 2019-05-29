@@ -14,12 +14,17 @@ namespace CookingQuest.Web.Controllers
     [Authorize(Roles = "Administrator")]
     public class LootController : Controller
     {
-        private readonly string _url = "https://localhost:44336/api";
+        private readonly MyConfiguration _myConfiguration;
+        private readonly string _url;
+        private string extensionUrl = "api";
+
         private readonly HttpClient _httpClient;
         private readonly string Email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
-        public LootController(HttpClient httpClient)
+        public LootController(HttpClient httpClient, MyConfiguration myConfiguration)
         {
             _httpClient = httpClient;
+            _myConfiguration = myConfiguration;
+            _url = _myConfiguration.ServiceUrl + extensionUrl;
         }
         [AllowAnonymous]
         // GET: Loot

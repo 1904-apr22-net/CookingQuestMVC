@@ -14,13 +14,20 @@ namespace CookingQuest.Web.Controllers
     [Authorize]
     public class PlayerController : Controller
     {
-        private readonly string _url = "https://localhost:44336/api/player";
+        private readonly MyConfiguration _myConfiguration;
+        private readonly string _url;
+        private string extensionUrl = "api/player";
+
         private readonly HttpClient _httpClient;
         private readonly string Email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
-        public PlayerController(HttpClient httpClient)
+
+        public PlayerController(HttpClient httpClient, MyConfiguration myConfiguration)
         {
             _httpClient = httpClient;
+            _myConfiguration = myConfiguration;
+            _url = _myConfiguration.ServiceUrl + extensionUrl;
         }
+
 
         // GET: Player
         public async Task<ActionResult> Index()
