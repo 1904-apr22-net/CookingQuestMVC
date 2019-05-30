@@ -98,8 +98,15 @@ namespace CookingQuest.Web.Controllers
                 return View();
             }
         }
-
-        public async Task<ActionResult> Edit(LocationModel locationModel)
+        [Authorize(Roles = "Administrator")]
+        public ActionResult EditLocation(int LocationId, string Name, string Description, int Difficulty)
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditLocation(LocationModel locationModel)
         {
             try
             {
@@ -107,12 +114,11 @@ namespace CookingQuest.Web.Controllers
                 {
                     return View(locationModel);
                 }
-                HttpResponseMessage response = await _httpClient.GetAsync(_url + "/Location/" + locationModel.LocationId);
+                HttpResponseMessage response = await _httpClient.PutAsJsonAsync(_url + "/Location/" + locationModel.LocationId, locationModel);
                 if (!response.IsSuccessStatusCode)
                 {
                     return View("Error", new ErrorViewModel());
                 }
-                LocationModel location = await response.Content.ReadAsAsync<LocationModel>();
 
                 return RedirectToAction(nameof(Index));
 
