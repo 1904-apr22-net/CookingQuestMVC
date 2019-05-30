@@ -14,19 +14,25 @@ namespace CookingQuest.Web.Controllers
     [Authorize]
     public class LocationController : Controller
     {
-        private readonly string _url = "https://localhost:44336/api/player";
+        private readonly MyConfiguration _myConfiguration;
+        private readonly string _url;
+        private string extensionUrl = "api";
         private readonly HttpClient _httpClient;
         private readonly string Email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
-        public LocationController(HttpClient httpClient)
+
+        public LocationController(HttpClient httpClient, MyConfiguration myConfiguration)
         {
             _httpClient = httpClient;
+            _myConfiguration = myConfiguration;
+            _url = _myConfiguration.ServiceUrl + extensionUrl;
         }
+        
 
-        // GET: Player
+        // GET: Location
         public async Task<ActionResult> Index()
         {
 
-            HttpResponseMessage response = await _httpClient.GetAsync(_url + "/location/");
+            HttpResponseMessage response = await _httpClient.GetAsync(_url + "/Location/");
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error", new ErrorViewModel());
@@ -42,7 +48,7 @@ namespace CookingQuest.Web.Controllers
 
             foreach (LocationViewModel l in locationsViewModel)
             {
-                HttpResponseMessage response2 = await _httpClient.GetAsync(_url + "/location/loot/" + l.LocationId);
+                HttpResponseMessage response2 = await _httpClient.GetAsync(_url + "/Location/Loot/" + l.LocationId);
                 if (!response.IsSuccessStatusCode)
                 {
                     return View("Error", new ErrorViewModel());
@@ -58,25 +64,84 @@ namespace CookingQuest.Web.Controllers
             return View(locationsViewModel);
         }
 
-        // GET: Player/Details/5
+
+
+        // GET: Location/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: Player/Create
+        // GET: Location/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Player/Create
+        // POST: Location/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(LocationModel locationModel)
         {
             try
             {
+                HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_url + "/Location/", locationModel);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        [Authorize(Roles = "Administrator")]
+        public ActionResult EditLocation(int LocationId, string Name, string Description, int Difficulty)
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditLocation(LocationModel locationModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(locationModel);
+                }
+                HttpResponseMessage response = await _httpClient.PutAsJsonAsync(_url + "/Location/" + locationModel.LocationId, locationModel);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+
+                return RedirectToAction(nameof(Index));
+
+            }
+            catch
+            {
+                return View();
+            }
+
+
+            }
+
+
+                // GET: Location/Delete/5
+                public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.DeleteAsync(_url + "/Location/" + id);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -86,35 +151,7 @@ namespace CookingQuest.Web.Controllers
             }
         }
 
-        // GET: Player/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Player/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Player/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Player/Delete/5
+        // POST: Location/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
