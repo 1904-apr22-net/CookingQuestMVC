@@ -13,7 +13,7 @@ namespace CookingQuest.Web.API_Models
         [RegularExpression("^[a-zA-Z -]*$", ErrorMessage = "Only Letters from the Alphabet")]
         public string Name { get; set; }
         [Required]
-        [Range(1, 1000000, ErrorMessage = "Please enter correct value (Between 1-1000000")]
+        [Range(0, 1000000, ErrorMessage = "Please enter correct value (Between 0-1000000")]
         public int Gold { get; set; }
     }
 }
