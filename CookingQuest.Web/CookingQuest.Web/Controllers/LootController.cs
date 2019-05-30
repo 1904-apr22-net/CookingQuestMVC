@@ -26,7 +26,6 @@ namespace CookingQuest.Web.Controllers
             _myConfiguration = myConfiguration;
             _url = _myConfiguration.ServiceUrl + extensionUrl;
         }
-        [AllowAnonymous]
         // GET: Loot
         public async Task<ActionResult> Index()
         {

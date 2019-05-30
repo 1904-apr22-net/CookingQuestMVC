@@ -10,5 +10,6 @@ namespace CookingQuest.Web.API_Models
         public int FlavorId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int Bonus { get; set; }
     }
 }
