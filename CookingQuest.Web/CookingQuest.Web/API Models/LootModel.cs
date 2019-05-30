@@ -30,7 +30,7 @@ namespace CookingQuest.Web.API_Models
         [Required]
         [Range(1, 1000, ErrorMessage = "Please enter correct value (Between 1-1000")]
         public int DropRate { get; set; } = 1;
-
+        public int LocationLootId { get; set; }
         public int PlayerLootId { get; set; }
     }
 }
