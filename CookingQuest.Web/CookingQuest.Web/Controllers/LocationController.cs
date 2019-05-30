@@ -38,28 +38,25 @@ namespace CookingQuest.Web.Controllers
                 return View("Error", new ErrorViewModel());
             }
             IEnumerable<LocationModel> locations = await response.Content.ReadAsAsync<IEnumerable<LocationModel>>();
+            
+            foreach (LocationModel l in locations)
+            {
+                HttpResponseMessage response2 = await _httpClient.GetAsync(_url + "/Location/Loot/" + l.LocationId);
+                if (!response2.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+                IEnumerable<LootModel> loot = await response2.Content.ReadAsAsync<IEnumerable<LootModel>>();
+                l.Loot = loot;
+            }
             IEnumerable<LocationViewModel> locationsViewModel = locations.Select(x => new LocationViewModel()
             {
                 LocationId = x.LocationId,
                 Difficulty = x.Difficulty,
                 Description = x.Description,
-                Name = x.Name
+                Name = x.Name,
+                Loot = x.Loot
             });
-
-            foreach (LocationViewModel l in locationsViewModel)
-            {
-                HttpResponseMessage response2 = await _httpClient.GetAsync(_url + "/Location/Loot/" + l.LocationId);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error", new ErrorViewModel());
-                }
-                IEnumerable<LootModel> loot = await response.Content.ReadAsAsync<IEnumerable<LootModel>>();
-                l.Loot = loot;
-            }
-
-         
-
-          
 
             return View(locationsViewModel);
         }
@@ -99,11 +96,17 @@ namespace CookingQuest.Web.Controllers
             }
         }
         [Authorize(Roles = "Administrator")]
+        public ActionResult EditLoot(int LocationId, int LootId, int LocationLootId, string Description, int DropRate, string Name)
+        {
+            return View();
+        }
+
+
+        [Authorize(Roles = "Administrator")]
         public ActionResult EditLocation(int LocationId, string Name, string Description, int Difficulty)
         {
             return View();
         }
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditLocation(LocationModel locationModel)
@@ -131,9 +134,34 @@ namespace CookingQuest.Web.Controllers
 
             }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditLoot(LootModel lootModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(lootModel);
+                }
+                HttpResponseMessage response = await _httpClient.PutAsJsonAsync(_url + "/Location/Loot/", lootModel);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
 
-                // GET: Location/Delete/5
-                public async Task<ActionResult> Delete(int id)
+                return RedirectToAction(nameof(Index));
+
+            }
+            catch
+            {
+                return View();
+            }
+
+
+        }
+        // GET: Location/Delete/5
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
