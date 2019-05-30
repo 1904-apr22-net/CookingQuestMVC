@@ -1,0 +1,168 @@
+﻿@model CookingQuest.Web.Models.StoreViewModel
+
+@{
+    ViewData["Title"] = "EquipmentIndex";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <h1>Player</h1>
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Player.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Player.Gold)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Player.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Player.Gold)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <strong>Your Pass:</strong> @Model.CurrentVoucher.Name
+                    </td>
+                </tr>
+                <tr>
+                    @if (Model.NextVoucher != null)
+                    {
+                        <td>
+                            <strong>Next Pass:</strong> @Model.NextVoucher.Name
+                        </td>
+                        <td>
+                            <strong>&emsp;Price:</strong> @Model.NextVoucher.Price &emsp;
+                        </td>
+                        <td>
+                            @if (Model.Player.Gold >= Model.NextVoucher.Price)
+                            {
+                                @using (Html.BeginForm(actionName: "Add", controllerName: "Store", routeValues: new { }, method: FormMethod.Post, antiforgery: true, htmlAttributes: new { id = Model.NextVoucher.EquipmentId }))
+                                {
+                                    @Html.HiddenFor(m => Model.NextVoucher.Difficulty)
+                                    @Html.HiddenFor(m => Model.NextVoucher.EquipmentId)
+                                    @Html.HiddenFor(m => Model.NextVoucher.Modifier)
+                                    @Html.HiddenFor(m => Model.NextVoucher.Name)
+                                    @Html.HiddenFor(m => Model.NextVoucher.PlayerEquipmentId)
+                                    @Html.HiddenFor(m => Model.NextVoucher.Price)
+                                    @Html.HiddenFor(m => Model.NextVoucher.Type)
+                                    <a href="javascript:document.getElementById('@Model.NextVoucher.EquipmentId').submit()">Buy</a>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <em>You Have Every Pass</em>
+                        </td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {
+        List<SelectListItem>
+            chooseStore = new List<SelectListItem>
+                ();
+
+        foreach (var store in Model.storeModels)
+        {
+            chooseStore.Add(new SelectListItem() { Text = store.Name, Value = store.StoreId.ToString() });
+        }
+        <br />
+        <form asp-action="StoreIndex" method="get">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="StoreId" class="control-label"></label>
+                <select asp-for="StoreId"
+                        asp-items="chooseStore" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </form>
+        <br />
+    }
+
+    @if (Model.InStock.Count() > 0)
+    {
+        <h3>Purchase Equipment</h3>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Quality
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var NextVoucher in Model.InStock)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => NextVoucher.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => NextVoucher.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => NextVoucher.Difficulty)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => NextVoucher.Price)
+                            </td>
+                            <td>
+                                @if (Model.Player.Gold >= NextVoucher.Price)
+                                {
+                                    @using (Html.BeginForm(actionName: "Add", controllerName: "Store", routeValues: new { }, method: FormMethod.Post, antiforgery: true, htmlAttributes: new { id = NextVoucher.EquipmentId }))
+                                    {
+                                        @Html.HiddenFor(m => NextVoucher.Difficulty)
+                                        @Html.HiddenFor(m => NextVoucher.EquipmentId)
+                                        @Html.HiddenFor(m => NextVoucher.Modifier)
+                                        @Html.HiddenFor(m => NextVoucher.Name)
+                                        @Html.HiddenFor(m => NextVoucher.PlayerEquipmentId)
+                                        @Html.HiddenFor(m => NextVoucher.Price)
+                                        @Html.HiddenFor(m => NextVoucher.Type)
+                                        <a href="javascript:document.getElementById('@NextVoucher.EquipmentId').submit()">Buy</a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+            }
+            else if (Model.NextVoucher == null)
+            {
+            <h3>You bought all of the equipment</h3>
+            }
+            else
+            {
+            <h3>You need to buy the next voucher to get more equipment!</h3>
+            }
+
+            }

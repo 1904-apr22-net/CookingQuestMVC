@@ -51,7 +51,7 @@ else
 @if (User.Identity.IsAuthenticated && Model.Locations.Count() != 0)
 {
     <br />
-    <h1>Unlocked Locations</h1>
+    <h3>Unlocked Locations</h3>
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table">
             <thead>
@@ -89,12 +89,12 @@ else
 else
 {
     <br />
-    <h1>No Unlocked Locations</h1>
+    <h3>No Unlocked Locations</h3>
 }
 @if (User.Identity.IsAuthenticated && Model.Equipment.Count() != 0)
 {
     <br />
-    <h1>Player Equipment</h1>
+    <h3>Player Equipment</h3>
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table">
             <thead>
@@ -165,12 +165,12 @@ else
 else
 {
     <br />
-    <h1>No Player Equipment</h1>
+    <h3>No Player Equipment</h3>
 }
 @if (User.Identity.IsAuthenticated && Model.Loot.Count() != 0)
 {
     <br />
-    <h1>Player Loot</h1>
+    <h3>Player Loot</h3>
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table">
             <thead>
@@ -239,6 +239,6 @@ else
         else
         {
         <br />
-        <h1>No Player Loot</h1>
+        <h3>No Player Loot</h3>
         }
 

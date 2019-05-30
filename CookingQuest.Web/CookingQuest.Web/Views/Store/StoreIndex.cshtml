@@ -1,0 +1,127 @@
+﻿@model CookingQuest.Web.Models.StoreViewModel
+
+@{
+    ViewData["Title"] = "StoreIndex";
+}
+
+<h1>Store</h1>
+<br />
+<h3>Player</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Player.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player.Gold)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Player.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Player.Gold)
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<h3>Flavor Bonuses</h3>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Flavor
+                </th>
+                <th>
+                    Bonus
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Store.Flavors)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                        &emsp; &emsp;
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Bonus)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    <br />
+    <h3>Sell Loot</h3>
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Flavor
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Loot)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Flavor.Name)
+                        </td>
+                        <td>
+                                @using (Html.BeginForm(actionName: "StoreIndex", controllerName: "Store", routeValues: new { }, method: FormMethod.Post, antiforgery: true, htmlAttributes: new { id = item.PlayerLootId }))
+                                {
+                                    @for (int i = 0; i < Model.Store.Flavors.Count; i++)
+                                    {
+                                        @Html.HiddenFor(it => Model.Store.Flavors[i].Bonus)
+                                        @Html.HiddenFor(it => Model.Store.Flavors[i].Description)
+                                        @Html.HiddenFor(it => Model.Store.Flavors[i].FlavorId)
+                                        @Html.HiddenFor(it => Model.Store.Flavors[i].Name)
+                                    }
+                                    @Html.HiddenFor(m => item.LootId)
+                                    @Html.HiddenFor(m => item.Price)
+                                    @Html.HiddenFor(m => item.Quantity)
+                                    @Html.HiddenFor(m => item.Flavor.FlavorId)
+                                    @Html.HiddenFor(m => item.PlayerLootId)
+                                    @Html.HiddenFor(m => Model.Player.Gold)
+                                    @Html.HiddenFor(m => Model.Player.PlayerId)
+                                    @Html.HiddenFor(m => Model.Store.StoreId)
+
+                                    <a href="javascript:document.getElementById('@item.PlayerLootId').submit()">Buy</a>
+                                }
+                            
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
