@@ -87,7 +87,7 @@ namespace CookingQuest.Tests
         public void Models()
         {
 
-            AccountModel a = new AccountModel();
+            AccountModel a = new AccountModel() {AccountId =1,IsAdmin = true, Password= "a", PlayerId=1,Username="" };
             EquipmentModel b = new EquipmentModel();
             FlavorModel c = new FlavorModel();
             FlavorLootModel d = new FlavorLootModel();
@@ -112,7 +112,7 @@ namespace CookingQuest.Tests
             StoreViewModel sv = new StoreViewModel();
 
             MyConfiguration my = new MyConfiguration();
-            
+
             Assert.NotNull(my);
             Assert.NotNull(ev);
             Assert.NotNull(lv);
@@ -138,6 +138,60 @@ namespace CookingQuest.Tests
 
 
 
+        }
+        [Fact]
+        public void Store2()
+        {
+            // ARRANGE
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+               .Protected()
+               // Setup the PROTECTED method to mock
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               // prepare the expected response of the mocked http call
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = null,
+               })
+               .Verifiable();
+
+            var httpClient = new HttpClient(handlerMock.Object)
+            {
+                BaseAddress = new Uri("http://test.com/"),
+            };
+            var subjectUnderTest = new EquipmentController(httpClient, new Web.MyConfiguration() { ServiceUrl = "http://test.com/" });
+
+            var result = subjectUnderTest.Index();
+            var result2 = subjectUnderTest.Create();
+            var result3 = subjectUnderTest.Create(new EquipmentModel());
+            var result4 = subjectUnderTest.Edit(new EquipmentModel());
+            var result5 = subjectUnderTest.Edit(1,2,"","",2,3,3);
+
+            var subjectUnderTest2 = new LocationController(httpClient, new Web.MyConfiguration() { ServiceUrl = "http://test.com/" });
+            var result6 = subjectUnderTest2.Index();
+            var result7 = subjectUnderTest2.Create();
+            var result8 = subjectUnderTest2.Create(new LocationModel());
+            var result9 = subjectUnderTest2.EditLoot(1, 1, 1, "", 1, "");
+            var result10 = subjectUnderTest2.EditLoot(new LootModel());
+            var result11 = subjectUnderTest2.EditLocation(new LocationModel());
+            var result12 = subjectUnderTest2.EditLocation(1, "", "", 1);
+            var result13 = subjectUnderTest2.Delete(1);
+
+            var subjectUnderTest3 = new HomeController();
+            subjectUnderTest3.Index();
+            subjectUnderTest3.Privacy();
+
+
+            var subjectUnderTest4 = new LootController(httpClient, new Web.MyConfiguration() { ServiceUrl = "http://test.com/" });
+            var result17 = subjectUnderTest4.Index();
+            var subjectUnderTest5 = new PlayerController(httpClient, new Web.MyConfiguration() { ServiceUrl = "http://test.com/" });
+
+            Assert.True(true);
         }
     }
 }
