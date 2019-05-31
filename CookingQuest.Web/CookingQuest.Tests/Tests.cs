@@ -1,4 +1,5 @@
-﻿using CookingQuest.Web.Controllers;
+﻿using CookingQuest.Web.API_Models;
+using CookingQuest.Web.Controllers;
 using Moq;
 using Moq.Protected;
 using System;
@@ -31,7 +32,7 @@ namespace CookingQuest.Tests
                .ReturnsAsync(new HttpResponseMessage()
                {
                    StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent("[{'id':1,'value':'1'}]"),
+                   Content = null,
                })
                .Verifiable();
 
@@ -43,8 +44,39 @@ namespace CookingQuest.Tests
 
             var result = subjectUnderTest.Index();
             var result2 = subjectUnderTest.Add(new Web.API_Models.EquipmentModel() { Difficulty = 2, EquipmentId = 1, Modifier = 1, Name = "a", PlayerEquipmentId = 1, Price = 1, Type = "Dunegon" });
+            var result3 = subjectUnderTest.StoreIndex(1);
+            var result4 = subjectUnderTest.StoreIndex(new StoreModel()
+            {
+                Flavors = new List<FlavorModel>() { new FlavorModel()
+                { Bonus = 1, Description = "a", FlavorId = 2, Name = "b"} },
+                Description = "b",
+                Difficulty = 1,
+                Name = "a",
+                StoreId =1,
 
-
+            }, new LootModel()
+            {Description ="a",
+            DropRate = 1,
+            Flavor = new FlavorModel()
+            {
+                Bonus = 1,
+                Description ="a",
+                FlavorId=1,
+                Name = "b"
+            },
+            FlavorLootId =1,
+            LocationLootId =1,
+            LootId =1,
+            Name = "b",
+            PlayerLootId = 1,
+            Price = 1,
+            Quantity =1,
+            },new PlayerModel()
+            {
+                Gold = 1,
+                Name = "p",
+                PlayerId = 1,
+            });
             Assert.NotNull(result);
             Assert.NotNull(result2);
         }
