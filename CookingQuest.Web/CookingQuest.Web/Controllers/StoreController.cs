@@ -30,7 +30,7 @@ namespace CookingQuest.Web.Controllers
         // GET: Store
         public async Task<ActionResult> Index()
         {
-            var email = User.Claims.First(c => c.Type == Email).Value ?? "fortest";
+            var email = User?.Claims.First(c => c.Type == Email).Value ?? "fortest";
 
             HttpResponseMessage response = await _httpClient.GetAsync(_url + "/player/account/" + email);
             if (!response.IsSuccessStatusCode)
@@ -91,7 +91,7 @@ namespace CookingQuest.Web.Controllers
                 {
                     return View(NextVoucher);
                 }
-                var email = User.Claims.First(c => c.Type == Email).Value ?? "fortest";
+                var email = User?.Claims.First(c => c.Type == Email).Value ?? "fortest";
 
                 HttpResponseMessage response = await _httpClient.GetAsync(_url + "/player/account/" + email);
                 if (!response.IsSuccessStatusCode)
