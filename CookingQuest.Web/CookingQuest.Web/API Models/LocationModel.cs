@@ -11,6 +11,7 @@ namespace CookingQuest.Web.API_Models
         public string Name { get; set; }
         public int Difficulty { get; set; }
         public string Description { get; set; }
+        public IEnumerable<LootModel> Loot { get; set; }
 
         public bool Validate()
         {
