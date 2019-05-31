@@ -32,7 +32,7 @@ namespace CookingQuest.Web.Controllers
         // GET: Player
         public async Task<ActionResult> Index()
         {
-            var email = User.Claims.First(c => c.Type == Email).Value;
+            var email = User?.Claims.First(c => c.Type == Email).Value;
 
             HttpResponseMessage response = await _httpClient.GetAsync(_url + "/account/" + email);
             if (!response.IsSuccessStatusCode)
@@ -98,7 +98,7 @@ namespace CookingQuest.Web.Controllers
                 {
                     return View(lootModel);
                 }
-                var email = User.Claims.First(c => c.Type == Email).Value;
+                var email = User?.Claims.First(c => c.Type == Email).Value;
 
                 HttpResponseMessage response = await _httpClient.GetAsync(_url + "/account/" + email);
                 if (!response.IsSuccessStatusCode)
@@ -140,7 +140,7 @@ namespace CookingQuest.Web.Controllers
                 {
                     return View(playerModel);
                 }
-                var email = User.Claims.First(c => c.Type == Email).Value;
+                var email = User?.Claims.First(c => c.Type == Email).Value;
 
                 HttpResponseMessage response = await _httpClient.GetAsync(_url + "/account/" + email);
                 if (!response.IsSuccessStatusCode)
@@ -182,7 +182,7 @@ namespace CookingQuest.Web.Controllers
                 {
                     return View(equipmentModel);
                 }
-                var email = User.Claims.First(c => c.Type == Email).Value;
+                var email = User?.Claims.First(c => c.Type == Email).Value;
 
                 HttpResponseMessage response = await _httpClient.GetAsync(_url + "/account/" + email);
                 if (!response.IsSuccessStatusCode)
@@ -225,7 +225,7 @@ namespace CookingQuest.Web.Controllers
                 {
                     return View(lootModel);
                 }
-                var email = User.Claims.First(c => c.Type == Email).Value;
+                var email = User?.Claims.First(c => c.Type == Email).Value;
 
                 HttpResponseMessage response = await _httpClient.DeleteAsync(_url + "/DeleteLoot/" + id);
                 if (!response.IsSuccessStatusCode)
@@ -253,7 +253,7 @@ namespace CookingQuest.Web.Controllers
                 {
                     return View(equipmentModel);
                 }
-                var email = User.Claims.First(c => c.Type == Email).Value;
+                var email = User?.Claims.First(c => c.Type == Email).Value;
 
                 HttpResponseMessage response = await _httpClient.DeleteAsync(_url + "/DeleteEquipment/" + id);
                 if (!response.IsSuccessStatusCode)
