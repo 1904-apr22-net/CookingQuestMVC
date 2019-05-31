@@ -1,11 +1,12 @@
 ﻿@model CookingQuest.Web.API_Models.EquipmentModel
-
+@using System.Text.RegularExpressions
 @{
     ViewData["Title"] = "EditEquipment";
     var userName = User.Claims.First(c => c.Type == "name").Value;
+    userName = Regex.Replace(userName.Split()[0], @"[^0-9a-zA-Z\ ]+", "");
 }
 
-    <h1>Update @userName's Equipment</h1>
+<h1>Update @userName's Equipment</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">

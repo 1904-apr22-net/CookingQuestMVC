@@ -1,8 +1,9 @@
 ﻿@model CookingQuest.Web.API_Models.LootModel
-
+@using System.Text.RegularExpressions
 @{
     ViewData["Title"] = "Edit";
     var userName = User.Claims.First(c => c.Type == "name").Value;
+    userName = Regex.Replace(userName.Split()[0], @"[^0-9a-zA-Z\ ]+", "");
 }
 
 <h1>Update @userName's Loot</h1>
