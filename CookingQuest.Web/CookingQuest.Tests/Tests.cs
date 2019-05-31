@@ -87,22 +87,22 @@ namespace CookingQuest.Tests
         public void Models()
         {
 
-            AccountModel a = new AccountModel() {AccountId =1,IsAdmin = true, Password= "a", PlayerId=1,Username="" };
-            EquipmentModel b = new EquipmentModel();
-            FlavorModel c = new FlavorModel();
-            FlavorLootModel d = new FlavorLootModel();
-            LocationLootModel e = new LocationLootModel();
-            LocationModel f = new LocationModel();
-            LootModel g = new LootModel();
-            PlayerEquipmentModel pe = new PlayerEquipmentModel();
-            PlayerLocationModel pl = new PlayerLocationModel();
-            PlayerLootModel plm = new PlayerLootModel();
-            PlayerModel pm = new PlayerModel();
-            RecipeLootModel rl = new RecipeLootModel();
-            RecipeModel r = new RecipeModel();
-            StoreEquipmentModel se = new StoreEquipmentModel();
-            StoreFlavorModel sf = new StoreFlavorModel();
-            StoreModel s = new StoreModel();
+            AccountModel a = new AccountModel() { AccountId = 1, IsAdmin = true, Password = "a", PlayerId = 1, Username = "" };
+            EquipmentModel b = new EquipmentModel() { Difficulty = 1, EquipmentId = 1, Modifier = 1, Name = "", PlayerEquipmentId = 1, Price = 1, Type = "" };
+            FlavorModel c = new FlavorModel() { Bonus = 1, Name = "", Description = "", FlavorId = 1 };
+            FlavorLootModel d = new FlavorLootModel() { FlavorId = 1, FlavorLootId = 1, LootId = 1 };
+            LocationLootModel e = new LocationLootModel() { DropRate = 1, LocationId = 1, LocationLootId = 1, LootId = 1 };
+            LocationModel f = new LocationModel() { Description = "", Difficulty = 1, LocationId = 1, Loot = null, Name = "" };
+            LootModel g = new LootModel() { Description = "", DropRate = 1, Flavor = new FlavorModel(), FlavorLootId = 1, LocationLootId = 1, LootId = 1, Name = "", PlayerLootId = 1, Price = 1, Quantity = 1 };
+            PlayerEquipmentModel pe = new PlayerEquipmentModel() { EquipmentId = 1, PlayerEquipmentId = 1, PlayerId = 1 };
+            PlayerLocationModel pl = new PlayerLocationModel() { LocationId = 1, PlayerId = 1, PlayerLocationId = 1 };
+            PlayerLootModel plm = new PlayerLootModel() { LootId = 1, PlayerId = 1, PlayerLootId = 1, Quantity = 1 };
+            PlayerModel pm = new PlayerModel() { Gold = 1, Name = "", PlayerId = 1 };
+            RecipeLootModel rl = new RecipeLootModel(){LootId=1,RecipeLootId=1,RecipeId=1};
+            RecipeModel r = new RecipeModel() { Description="",Name="",RecipeId=1};
+            StoreEquipmentModel se = new StoreEquipmentModel() { EquipmentId=1,StoreEquipmentId=1,StoreId=1};
+            StoreFlavorModel sf = new StoreFlavorModel() { Bonus=1,FlavorId=1,StoreFlavorId=1,StoreId=1};
+            StoreModel s = new StoreModel() {Description="",Difficulty=1,Flavors=null,Name="",StoreId=1 };
 
 
 
@@ -190,8 +190,18 @@ namespace CookingQuest.Tests
             var subjectUnderTest4 = new LootController(httpClient, new Web.MyConfiguration() { ServiceUrl = "http://test.com/" });
             var result17 = subjectUnderTest4.Index();
             var subjectUnderTest5 = new PlayerController(httpClient, new Web.MyConfiguration() { ServiceUrl = "http://test.com/" });
-
-            Assert.True(true);
+            var result18 = subjectUnderTest5.Index();
+            var result19 = subjectUnderTest5.Edit(1,2,"","",1,1);
+            var result20 = subjectUnderTest5.Edit(new LootModel());
+            var result21 = subjectUnderTest5.EditPlayer(1, "", 1);
+            var result22 = subjectUnderTest5.EditPlayer(new PlayerModel());
+            var result23 = subjectUnderTest5.EditEquipment(1, 1, "", "", 1, 1, 1);
+            var result24 = subjectUnderTest5.EditEquipment(new EquipmentModel());
+            var result25 = subjectUnderTest5.Delete(1, new LootModel());
+            var result26 = subjectUnderTest5.Delete(1);
+            var result27 = subjectUnderTest5.DeleteEquipment(1, new EquipmentModel());
+            
+            Assert.NotNull(subjectUnderTest);
         }
     }
 }
