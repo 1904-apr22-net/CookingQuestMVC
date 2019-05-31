@@ -129,7 +129,7 @@ namespace CookingQuest.Web.Controllers
 
         public async Task<ActionResult> StoreIndex(int StoreId)
         {
-            var email = User.Claims.First(c => c.Type == Email).Value;
+            var email = User?.Claims.First(c => c.Type == Email).Value ?? "fortest";
 
             HttpResponseMessage response = await _httpClient.GetAsync(_url + "/player/account/" + email);
             if (!response.IsSuccessStatusCode)
@@ -166,7 +166,7 @@ namespace CookingQuest.Web.Controllers
         public async Task<ActionResult> StoreIndex(StoreModel Store, LootModel item, PlayerModel Player)
         {
 
-            var email = User.Claims.First(c => c.Type == Email).Value;
+            var email = User?.Claims.First(c => c.Type == Email).Value ?? "fortest";
 
             HttpResponseMessage response = await _httpClient.GetAsync(_url + "/player/account/" + email);
             if (!response.IsSuccessStatusCode)
@@ -199,50 +199,6 @@ namespace CookingQuest.Web.Controllers
             return View();
         }
 
-        // GET: Store/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Store/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Store/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Store/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         // GET: Store/Delete/5
         public ActionResult Delete(int id)
@@ -250,20 +206,5 @@ namespace CookingQuest.Web.Controllers
             return View();
         }
 
-        // POST: Store/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
