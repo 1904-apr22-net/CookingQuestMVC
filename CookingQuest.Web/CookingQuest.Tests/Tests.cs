@@ -109,7 +109,7 @@ namespace CookingQuest.Tests
             ErrorViewModel ev = new ErrorViewModel();
             LocationViewModel lv = new LocationViewModel();
             PlayerViewModel pv = new PlayerViewModel();
-            StoreViewModel sv = new StoreViewModel();
+            StoreViewModel sv = new StoreViewModel() {CurrentVoucher= null, HighestVoucher=1, InStock=null, Loot=null,NextVoucher= null,Player=null,PlayerEquipment=null,Store=null,StoreId=1,storeModels=null,Vouchers=null };
 
             MyConfiguration my = new MyConfiguration();
 
