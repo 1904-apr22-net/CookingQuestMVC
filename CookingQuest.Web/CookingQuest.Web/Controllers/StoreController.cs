@@ -37,28 +37,28 @@ namespace CookingQuest.Web.Controllers
             {
                 return View("Error", new ErrorViewModel());
             }
-            PlayerModel player = await response.Content.ReadAsAsync<PlayerModel>();
+            PlayerModel player = await response?.Content.ReadAsAsync<PlayerModel>();
 
             response = await _httpClient.GetAsync(_url + "/player/equipment/" + player.PlayerId);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error", new ErrorViewModel());
             }
-            IEnumerable<EquipmentModel> PlayerEquipment = await response.Content.ReadAsAsync<IEnumerable<EquipmentModel>>();
+            IEnumerable<EquipmentModel> PlayerEquipment = await response?.Content.ReadAsAsync<IEnumerable<EquipmentModel>>();
 
             response = await _httpClient.GetAsync(_url + "/equipment/");
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error", new ErrorViewModel());
             }
-            IEnumerable<EquipmentModel> equipment = await response.Content.ReadAsAsync<IEnumerable<EquipmentModel>>();
+            IEnumerable<EquipmentModel> equipment = await response?.Content.ReadAsAsync<IEnumerable<EquipmentModel>>();
 
             response = await _httpClient.GetAsync(_url + "/store/");
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error", new ErrorViewModel());
             }
-            IEnumerable<StoreModel> storeModels = await response.Content.ReadAsAsync<IEnumerable<StoreModel>>();
+            IEnumerable<StoreModel> storeModels = await response?.Content.ReadAsAsync<IEnumerable<StoreModel>>();
 
             IEnumerable<EquipmentModel> Vouchers = PlayerEquipment.Where(x => x.Type == "Voucher");
             int HighestVoucher = Vouchers.Max(x => x.Difficulty);
