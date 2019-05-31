@@ -77,9 +77,6 @@ namespace CookingQuest.Tests
                 Name = "p",
                 PlayerId = 1,
             });
-            var result5 = subjectUnderTest.Details(1);
-            var result6 = subjectUnderTest.Delete(1);
-
             Assert.NotNull(result);
             Assert.NotNull(result2);
         }
