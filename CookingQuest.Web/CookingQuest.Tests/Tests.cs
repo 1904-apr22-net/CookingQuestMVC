@@ -34,6 +34,7 @@ namespace CookingQuest.Tests
                    Content = new StringContent("[{'id':1,'value':'1'}]"),
                })
                .Verifiable();
+
             var httpClient = new HttpClient(handlerMock.Object)
             {
                 BaseAddress = new Uri("http://test.com/"),
@@ -41,7 +42,11 @@ namespace CookingQuest.Tests
             var subjectUnderTest = new StoreController(httpClient, new Web.MyConfiguration() { ServiceUrl = "http://test.com/"});
 
             var result = subjectUnderTest.Index();
+            var result2 = subjectUnderTest.Add(new Web.API_Models.EquipmentModel() { Difficulty = 2, EquipmentId = 1, Modifier = 1, Name = "a", PlayerEquipmentId = 1, Price = 1, Type = "Dunegon" });
+
+
             Assert.NotNull(result);
+            Assert.NotNull(result2);
         }
 
     }
