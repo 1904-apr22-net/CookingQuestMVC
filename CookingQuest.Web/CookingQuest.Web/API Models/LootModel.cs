@@ -11,7 +11,6 @@ namespace CookingQuest.Web.API_Models
 
         [Required]
         [StringLength(30, ErrorMessage = "Do not enter more than 30 characters")]
-        [RegularExpression("^[a-zA-Z -]*$", ErrorMessage = "Only Letters from the Alphabet")]
         public string Name { get; set; }
 
         [Required]
@@ -19,8 +18,7 @@ namespace CookingQuest.Web.API_Models
         public int Price { get; set; } = 1;
 
         [Required]
-        [StringLength(30, ErrorMessage = "Do not enter more than 30 characters")]
-        [RegularExpression("^[a-zA-Z -]*$", ErrorMessage = "Only Letters from the Alphabet")]
+        [StringLength(100, ErrorMessage = "Do not enter more than 100 characters")]
         public string Description { get; set; }
 
         [Required]

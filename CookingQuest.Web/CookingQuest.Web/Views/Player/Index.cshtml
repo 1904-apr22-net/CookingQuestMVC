@@ -218,7 +218,10 @@ else
                                      Price = lootModel.Price,
                                      Quantity = lootModel.Quantity,
                                  })
-                                @using (Html.BeginForm(actionName: "Delete", controllerName: "Player", routeValues: new { id = lootModel.PlayerLootId }, method: FormMethod.Post, antiforgery: true, htmlAttributes: new { id = lootModel.PlayerLootId }))
+                                @{ 
+                                    string LootRazor = "Loot" + lootModel.PlayerLootId.ToString();
+                                }
+                                @using (Html.BeginForm(actionName: "Delete", controllerName: "Player", routeValues: new { id = lootModel.PlayerLootId }, method: FormMethod.Post, antiforgery: true, htmlAttributes: new { id = LootRazor }))
                                 {
                                     @Html.HiddenFor(m => lootModel.PlayerLootId)
                                     @Html.HiddenFor(m => lootModel.LootId)
@@ -226,7 +229,7 @@ else
                                     @Html.HiddenFor(m => lootModel.Description)
                                     @Html.HiddenFor(m => lootModel.Price)
                                     @Html.HiddenFor(m => lootModel.Quantity)
-                                    <a href="javascript:document.getElementById('@lootModel.PlayerLootId').submit()">Delete</a>
+                                    <a href="javascript:document.getElementById('@LootRazor').submit()">Delete</a>
                                 }
                             </td>
                         }
