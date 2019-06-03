@@ -17,7 +17,10 @@ html {
     font-size: 16px;
   }
 }
-
+form, p,td,th,h1,h2,h3,h4,h5,h6, a, div.navbar-collapse.collapse.d-sm-inline-flex.flex-sm-row-reverse{
+	background-color: 	rgb(255, 255, 0,.7	)!important;
+	color:blue;
+}
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
@@ -64,4 +67,19 @@ body {
 
 .table-wrapper-scroll-y {
     display: block;
+}
+div#bg {
+    /* The image used */
+    background-image: url("/css/banana.jpg") !important;
+    /* Full height */
+	position:absolute
+    max-height: 3000px;
+    height: 100%;
+    max-width: 2000px;
+    width:1000px;
+    /* Center and scale the image nicely */
+    background-position:top;
+    background-repeat:repeat;
+    background-size:contain;
+    color: black !important;
 }
