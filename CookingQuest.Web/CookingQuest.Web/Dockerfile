@@ -1,21 +1,20 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
-
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-COPY ./*.csproj ./
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
+WORKDIR /src
+COPY ["CookingQuest.Web/CookingQuest.Web.csproj", "CookingQuest.Web/"]
+RUN dotnet restore "CookingQuest.Web/CookingQuest.Web.csproj"
+COPY . .
+WORKDIR "/src/CookingQuest.Web"
+RUN dotnet build "CookingQuest.Web.csproj" -c Release -o /app
 
-RUN dotnet restore
+FROM build AS publish
+RUN dotnet publish "CookingQuest.Web.csproj" -c Release -o /app
 
-COPY . ./
-
-RUN dotnet build --no-restore --configuration Release
-
-RUN dotnet publish --no-build --configuration Release --output out
-
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
-
+FROM base AS final
 WORKDIR /app
-
-COPY --from=build /app/out ./
-
-ENTRYPOINT [ "dotnet", "CookingQuest.Web.dll" ]
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "CookingQuest.Web.dll"]
