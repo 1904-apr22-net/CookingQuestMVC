@@ -9,6 +9,8 @@ namespace CookingQuest.Web.Models
     public class PlayerViewModel
     {
         public int PlayerId { get; set; }
+        public int LocationId { get; set; }
+        public int Modifier { get; set; }
         public string Name { get; set; }
         public int Gold { get; set; }
 
