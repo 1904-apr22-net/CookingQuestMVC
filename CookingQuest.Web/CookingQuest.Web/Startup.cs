@@ -40,7 +40,12 @@ namespace CookingQuest.Web
             services.AddSingleton<HttpClient>();
 
             services.AddSingleton(Configuration.GetSection("myConfiguration").Get<MyConfiguration>());
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            .AddSessionStateTempDataProvider();
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,13 +67,14 @@ namespace CookingQuest.Web
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

@@ -1,0 +1,63 @@
+﻿@model CookingQuest.Web.Models.PlayerViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Questing</h1>
+<br />
+
+@if (Model.Loot.Count() > 0)
+{
+    <h4>Loot Found</h4>
+    @foreach (var loot in Model.Loot)
+    {
+        <p>
+            @loot.Name
+        </p>
+    }
+}
+<table class="table">
+    <tbody>
+        <tr>
+            <td>
+                @{
+                    List<SelectListItem>
+                        chooseEquip = new List<SelectListItem>
+                            ();
+
+                    foreach (var equip in Model.Equipment)
+                    {
+                        chooseEquip.Add(new SelectListItem() { Text = equip.Name, Value = equip.Modifier.ToString() });
+                    }
+                    List<SelectListItem>
+                        chooseLocation = new List<SelectListItem>
+                            ();
+
+                    foreach (var location in Model.Locations)
+                    {
+                        chooseLocation.Add(new SelectListItem() { Text = location.Name, Value = location.LocationId.ToString() });
+                    }
+                    <br />
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <h3>Select Equipment</h3>
+                            <select asp-for="Modifier"
+                                    asp-items="chooseEquip" class="form-control"></select>
+                            <br />
+                            <h3>Select Location</h3>
+                            <select asp-for="LocationId"
+                                    asp-items="chooseLocation" class="form-control"></select>
+                            @Html.HiddenFor(m => Model.PlayerId)
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Submit" class="btn btn-primary" />
+                        </div>
+                    </form>
+                    <br />
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
