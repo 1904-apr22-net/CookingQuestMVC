@@ -74,12 +74,13 @@ div#bg {
     /* Full height */
 	position:absolute
     max-height: 3000px;
+    min-height:600px;
     height: 100%;
     max-width: 2000px;
     width:1000px;
     /* Center and scale the image nicely */
     background-position:top;
-    background-repeat:repeat;
-    background-size:contain;
+    background-repeat:repeat-y;
+    background-size:auto;
     color: black !important;
 }
